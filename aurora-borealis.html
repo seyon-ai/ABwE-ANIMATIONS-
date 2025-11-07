@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Borealis - BGAnimations</title>
+    <meta name="description" content="Northern lights simulation with flowing colorful curtains and subtle glow">
+    <meta name="tags" content="aurora, nature, lights, colorful, northern lights">
+    <meta name="thumbnail" content="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        #aurora-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, #0a0e2a 0%, #1a1a2e 30%, #16213e 70%, #0f3460 100%);
+            z-index: 1;
+        }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #60a5fa;
+            font-size: 14px;
+        }
+        
+        input[type="range"] {
+            width: 200px;
+        }
+        
+        .back-button {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        .info-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            max-width: 300px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .info-panel h3 {
+            color: #60a5fa;
+            margin-bottom: 10px;
+        }
+        
+        .info-panel p {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #ccc;
+        }
+        
+        .aurora-presets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .preset-btn {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .preset-btn:hover {
+            background: rgba(96, 165, 250, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        select {
+            width: 100%;
+            padding: 8px;
+            background: rgba(30, 30, 30, 0.8);
+            color: white;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 5px;
+        }
+        
+        .aurora-stats {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .stat-value {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+        
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 4s infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        .mountain-silhouette {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(transparent, #0a0a0a);
+            z-index: 3;
+            clip-path: polygon(
+                0% 100%, 5% 80%, 10% 90%, 15% 70%, 20% 85%, 25% 65%, 
+                30% 95%, 35% 75%, 40% 100%, 45% 80%, 50% 90%, 55% 70%, 
+                60% 85%, 65% 65%, 70% 95%, 75% 75%, 80% 100%, 85% 80%, 
+                90% 90%, 95% 70%, 100% 100%
+            );
+        }
+        
+        .color-indicators {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .color-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+    </style>
+</head>
+<body>
+    <div id="aurora-container">
+        <div class="stars" id="stars"></div>
+        <canvas id="aurora-canvas"></canvas>
+        <div class="mountain-silhouette"></div>
+    </div>
+    
+    <div class="controls">
+        <div class="control-group">
+            <label for="aurora-speed">Flow Speed: <span id="speed-value">2</span></label>
+            <input type="range" id="aurora-speed" min="0.5" max="5" value="2" step="0.1">
+        </div>
+        
+        <div class="control-group">
+            <label for="intensity">Intensity: <span id="intensity-value">0.8</span></label>
+            <input type="range" id="intensity" min="0.1" max="1" value="0.8" step="0.1">
+        </div>
+        
+        <div class="control-group">
+            <label for="color-palette">Color Palette:</label>
+            <select id="color-palette">
+                <option value="classic-green">Classic Green</option>
+                <option value="purple-dream">Purple Dream</option>
+                <option value="fiery-red">Fiery Red</option>
+                <option value="blue-magic">Blue Magic</option>
+                <option value="rainbow">Rainbow Spectrum</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label for="curtain-count">Curtain Count: <span id="curtain-value">4</span></label>
+            <input type="range" id="curtain-count" min="1" max="8" value="4">
+        </div>
+        
+        <div class="aurora-presets">
+            <button class="preset-btn" data-preset="calm-night">Calm Night</button>
+            <button class="preset-btn" data-preset="solar-storm">Solar Storm</button>
+            <button class="preset-btn" data-preset="gentle-dance">Gentle Dance</button>
+            <button class="preset-btn" data-preset="intense-show">Intense Show</button>
+        </div>
+        
+        <div class="color-indicators">
+            <div class="color-dot" style="background: #00ff9d;"></div>
+            <div class="color-dot" style="background: #0088ff;"></div>
+            <div class="color-dot" style="background: #ff00ff;"></div>
+            <div class="color-dot" style="background: #ff4444;"></div>
+        </div>
+        
+        <button class="back-button" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+    </div>
+    
+    <div class="aurora-stats">
+        <div class="stat">Active Curtains: <span class="stat-value" id="curtain-count">4</span></div>
+        <div class="stat">Flow Energy: <span class="stat-value" id="energy-value">0</span></div>
+        <div class="stat">Frame Rate: <span class="stat-value" id="fps">0</span></div>
+        <div class="stat">Color Layers: <span class="stat-value" id="layer-count">3</span></div>
+    </div>
+    
+    <div class="info-panel">
+        <h3>Aurora Borealis</h3>
+        <p>Experience the magical Northern Lights with realistic flowing curtains of colorful light. Watch as the aurora dances across the night sky in this natural wonder simulation.</p>
+    </div>
+
+    <script>
+        class AuroraBorealis {
+            constructor() {
+                this.canvas = document.getElementById('aurora-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.curtains = [];
+                this.time = 0;
+                this.frameCount = 0;
+                this.fps = 0;
+                this.lastTime = performance.now();
+                
+                // Configuration
+                this.config = {
+                    auroraSpeed: 2,
+                    intensity: 0.8,
+                    colorPalette: 'classic-green',
+                    curtainCount: 4
+                };
+                
+                this.colorPalettes = {
+                    'classic-green': [
+                        { r: 0, g: 255, b: 157, a: 0.6 },  // Bright Green
+                        { r: 0, g: 200, b: 120, a: 0.4 },  // Medium Green
+                        { r: 0, g: 150, b: 100, a: 0.3 }   // Dark Green
+                    ],
+                    'purple-dream': [
+                        { r: 138, g: 43, b: 226, a: 0.6 }, // Purple
+                        { r: 186, g: 85, b: 211, a: 0.4 }, // Orchid
+                        { r: 255, g: 0, b: 255, a: 0.3 }   // Magenta
+                    ],
+                    'fiery-red': [
+                        { r: 255, g: 0, b: 0, a: 0.6 },    // Red
+                        { r: 255, g: 69, b: 0, a: 0.4 },   // Red-Orange
+                        { r: 255, g: 140, b: 0, a: 0.3 }   // Dark Orange
+                    ],
+                    'blue-magic': [
+                        { r: 0, g: 191, b: 255, a: 0.6 },  // Deep Sky Blue
+                        { r: 30, g: 144, b: 255, a: 0.4 }, // Dodger Blue
+                        { r: 0, g: 0, b: 255, a: 0.3 }     // Blue
+                    ],
+                    'rainbow': [
+                        { r: 255, g: 0, b: 0, a: 0.5 },    // Red
+                        { r: 255, g: 165, b: 0, a: 0.5 },  // Orange
+                        { r: 0, g: 255, b: 0, a: 0.5 },    // Green
+                        { r: 0, g: 0, b: 255, a: 0.5 },    // Blue
+                        { r: 128, g: 0, b: 128, a: 0.5 }   // Purple
+                    ]
+                };
+                
+                this.init();
+                this.setupEventListeners();
+                this.createStars();
+                this.animate();
+            }
+            
+            init() {
+                this.resizeCanvas();
+                this.createCurtains();
+                
+                // Setup controls
+                document.getElementById('aurora-speed').value = this.config.auroraSpeed;
+                document.getElementById('intensity').value = this.config.intensity;
+                document.getElementById('color-palette').value = this.config.colorPalette;
+                document.getElementById('curtain-count').value = this.config.curtainCount;
+                
+                this.updateControlValues();
+            }
+            
+            resizeCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+            
+            createCurtains() {
+                this.curtains = [];
+                const colors = this.colorPalettes[this.config.colorPalette];
+                
+                for (let i = 0; i < this.config.curtainCount; i++) {
+                    const curtain = {
+                        x: Math.random() * this.canvas.width,
+                        width: 100 + Math.random() * 200,
+                        height: 300 + Math.random() * 200,
+                        speed: 0.5 + Math.random() * this.config.auroraSpeed,
+                        phase: Math.random() * Math.PI * 2,
+                        layers: [],
+                        drift: (Math.random() - 0.5) * 2
+                    };
+                    
+                    // Create multiple layers for each curtain
+                    for (let j = 0; j < colors.length; j++) {
+                        curtain.layers.push({
+                            color: colors[j],
+                            amplitude: 20 + j * 15,
+                            frequency: 0.01 + j * 0.005,
+                            speed: curtain.speed * (0.8 + j * 0.1)
+                        });
+                    }
+                    
+                    this.curtains.push(curtain);
+                }
+            }
+            
+            createStars() {
+                const starsContainer = document.getElementById('stars');
+                starsContainer.innerHTML = '';
+                
+                // Create more stars for realistic night sky
+                for (let i = 0; i < 300; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    
+                    // Random size - most stars small, some larger
+                    const size = Math.random() < 0.1 ? 
+                        Math.random() * 2 + 1 : 
+                        Math.random() * 1;
+                    
+                    star.style.width = size + 'px';
+                    star.style.height = size + 'px';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 80 + '%'; // Keep stars in upper part
+                    star.style.opacity = Math.random() * 0.8 + 0.2;
+                    star.style.animationDelay = Math.random() * 4 + 's';
+                    star.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    
+                    starsContainer.appendChild(star);
+                }
+            }
+            
+            setupEventListeners() {
+                window.addEventListener('resize', () => {
+                    this.resizeCanvas();
+                    this.createCurtains();
+                });
+                
+                // Control event listeners
+                document.getElementById('aurora-speed').addEventListener('input', (e) => {
+                    this.config.auroraSpeed = parseFloat(e.target.value);
+                    document.getElementById('speed-value').textContent = this.config.auroraSpeed.toFixed(1);
+                    this.updateCurtainSpeeds();
+                });
+                
+                document.getElementById('intensity').addEventListener('input', (e) => {
+                    this.config.intensity = parseFloat(e.target.value);
+                    document.getElementById('intensity-value').textContent = this.config.intensity.toFixed(1);
+                });
+                
+                document.getElementById('color-palette').addEventListener('change', (e) => {
+                    this.config.colorPalette = e.target.value;
+                    this.updateCurtainColors();
+                });
+                
+                document.getElementById('curtain-count').addEventListener('input', (e) => {
+                    this.config.curtainCount = parseInt(e.target.value);
+                    document.getElementById('curtain-value').textContent = this.config.curtainCount;
+                    this.createCurtains();
+                });
+                
+                // Preset buttons
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.applyPreset(e.target.dataset.preset);
+                    });
+                });
+            }
+            
+            applyPreset(preset) {
+                switch(preset) {
+                    case 'calm-night':
+                        this.config.auroraSpeed = 1;
+                        this.config.intensity = 0.4;
+                        this.config.curtainCount = 2;
+                        break;
+                    case 'solar-storm':
+                        this.config.auroraSpeed = 4;
+                        this.config.intensity = 1;
+                        this.config.curtainCount = 6;
+                        break;
+                    case 'gentle-dance':
+                        this.config.auroraSpeed = 2;
+                        this.config.intensity = 0.6;
+                        this.config.curtainCount = 3;
+                        break;
+                    case 'intense-show':
+                        this.config.auroraSpeed = 5;
+                        this.config.intensity = 0.9;
+                        this.config.curtainCount = 8;
+                        break;
+                }
+                
+                // Update controls
+                document.getElementById('aurora-speed').value = this.config.auroraSpeed;
+                document.getElementById('intensity').value = this.config.intensity;
+                document.getElementById('curtain-count').value = this.config.curtainCount;
+                
+                this.updateControlValues();
+                this.updateCurtainSpeeds();
+                this.createCurtains();
+            }
+            
+            updateCurtainSpeeds() {
+                this.curtains.forEach(curtain => {
+                    curtain.speed = 0.5 + Math.random() * this.config.auroraSpeed;
+                    curtain.layers.forEach(layer => {
+                        layer.speed = curtain.speed * (0.8 + curtain.layers.indexOf(layer) * 0.1);
+                    });
+                });
+            }
+            
+            updateCurtainColors() {
+                const colors = this.colorPalettes[this.config.colorPalette];
+                this.curtains.forEach(curtain => {
+                    curtain.layers.forEach((layer, index) => {
+                        layer.color = colors[index % colors.length];
+                    });
+                });
+            }
+            
+            updateControlValues() {
+                document.getElementById('speed-value').textContent = this.config.auroraSpeed.toFixed(1);
+                document.getElementById('intensity-value').textContent = this.config.intensity.toFixed(1);
+                document.getElementById('curtain-value').textContent = this.config.curtainCount;
+            }
+            
+            animate() {
+                const currentTime = performance.now();
+                const deltaTime = currentTime - this.lastTime;
+                this.lastTime = currentTime;
+                
+                // Calculate FPS
+                this.frameCount++;
+                if (this.frameCount % 10 === 0) {
+                    this.fps = Math.round(1000 / deltaTime);
+                    document.getElementById('fps').textContent = this.fps;
+                }
+                
+                this.time += deltaTime * 0.001;
+                
+                this.updateAurora();
+                this.drawAurora();
+                this.updateStats();
+                
+                requestAnimationFrame(() => this.animate());
+            }
+            
+            updateAurora() {
+                let totalEnergy = 0;
+                
+                this.curtains.forEach(curtain => {
+                    // Move curtain horizontally with drift
+                    curtain.x += curtain.drift * 0.1;
+                    
+                    // Keep curtains within bounds with wrap-around
+                    if (curtain.x < -curtain.width) {
+                        curtain.x = this.canvas.width;
+                    } else if (curtain.x > this.canvas.width) {
+                        curtain.x = -curtain.width;
+                    }
+                    
+                    // Calculate energy for this curtain
+                    const energy = Math.abs(curtain.drift) + curtain.speed;
+                    totalEnergy += energy;
+                });
+                
+                // Update energy display
+                document.getElementById('energy-value').textContent = totalEnergy.toFixed(2);
+            }
+            
+            drawAurora() {
+                // Clear with night sky gradient
+                this.ctx.fillStyle = 'rgba(10, 14, 42, 0.05)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw each curtain
+                this.curtains.forEach(curtain => {
+                    this.drawCurtain(curtain);
+                });
+                
+                // Add occasional shooting stars
+                if (Math.random() < 0.002) {
+                    this.createShootingStar();
+                }
+                
+                this.drawShootingStars();
+            }
+            
+            drawCurtain(curtain) {
+                const segmentCount = 50;
+                const segmentWidth = curtain.width / segmentCount;
+                
+                curtain.layers.forEach(layer => {
+                    const path = new Path2D();
+                    let firstPoint = true;
+                    
+                    for (let i = 0; i <= segmentCount; i++) {
+                        const x = curtain.x + i * segmentWidth;
+                        const progress = i / segmentCount;
+                        
+                        // Calculate y position with wave effect
+                        const baseY = this.canvas.height * 0.2 + progress * curtain.height;
+                        const wave = Math.sin(this.time * layer.speed + i * layer.frequency + curtain.phase) * layer.amplitude;
+                        const y = baseY + wave;
+                        
+                        if (firstPoint) {
+                            path.moveTo(x, y);
+                            firstPoint = false;
+                        } else {
+                            path.lineTo(x, y);
+                        }
+                    }
+                    
+                    // Complete the shape for filling
+                    path.lineTo(curtain.x + curtain.width, this.canvas.height);
+                    path.lineTo(curtain.x, this.canvas.height);
+                    path.closePath();
+                    
+                    // Create gradient for the curtain
+                    const gradient = this.ctx.createLinearGradient(
+                        curtain.x, 0, curtain.x, this.canvas.height
+                    );
+                    
+                    const color = layer.color;
+                    const alpha = color.a * this.config.intensity;
+                    
+                    gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
+                    gradient.addColorStop(0.2, `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * 0.3})`);
+                    gradient.addColorStop(0.5, `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha})`);
+                    gradient.addColorStop(0.8, `rgba(${color.r}, ${color.g}, ${color.b}, ${alpha * 0.3})`);
+                    gradient.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0)`);
+                    
+                    this.ctx.fillStyle = gradient;
+                    this.ctx.fill(path);
+                    
+                    // Add glow effect
+                    this.ctx.shadowColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                    this.ctx.shadowBlur = 20 * this.config.intensity;
+                    this.ctx.fill(path);
+                    this.ctx.shadowBlur = 0;
+                });
+            }
+            
+            createShootingStar() {
+                const shootingStar = {
+                    x: Math.random() * this.canvas.width,
+                    y: -10,
+                    vx: (Math.random() - 0.5) * 10,
+                    vy: Math.random() * 10 + 5,
+                    size: Math.random() * 2 + 1,
+                    life: 1.0,
+                    trail: []
+                };
+                
+                if (!this.shootingStars) this.shootingStars = [];
+                this.shootingStars.push(shootingStar);
+            }
+            
+            drawShootingStars() {
+                if (!this.shootingStars) return;
+                
+                this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+                this.ctx.lineWidth = 1;
+                this.ctx.lineCap = 'round';
+                
+                for (let i = this.shootingStars.length - 1; i >= 0; i--) {
+                    const star = this.shootingStars[i];
+                    
+                    // Update position
+                    star.x += star.vx;
+                    star.y += star.vy;
+                    star.life -= 0.02;
+                    
+                    // Add current position to trail
+                    star.trail.push({ x: star.x, y: star.y });
+                    
+                    // Keep trail length reasonable
+                    if (star.trail.length > 10) {
+                        star.trail.shift();
+                    }
+                    
+                    // Draw trail
+                    if (star.trail.length > 1) {
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(star.trail[0].x, star.trail[0].y);
+                        
+                        for (let j = 1; j < star.trail.length; j++) {
+                            this.ctx.lineTo(star.trail[j].x, star.trail[j].y);
+                        }
+                        
+                        const alpha = star.life * (j / star.trail.length);
+                        this.ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                        this.ctx.stroke();
+                    }
+                    
+                    // Draw star head
+                    this.ctx.fillStyle = `rgba(255, 255, 255, ${star.life})`;
+                    this.ctx.beginPath();
+                    this.ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                    this.ctx.fill();
+                    
+                    // Remove dead stars
+                    if (star.life <= 0 || star.y > this.canvas.height) {
+                        this.shootingStars.splice(i, 1);
+                    }
+                }
+            }
+            
+            updateStats() {
+                document.getElementById('curtain-count').textContent = this.curtains.length;
+                
+                let totalLayers = 0;
+                this.curtains.forEach(curtain => {
+                    totalLayers += curtain.layers.length;
+                });
+                document.getElementById('layer-count').textContent = totalLayers;
+            }
+        }
+        
+        // Initialize the animation when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new AuroraBorealis();
+        });
+    </script>
+</body>
+</html>

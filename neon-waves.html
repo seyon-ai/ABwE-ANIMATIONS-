@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Gradient Waves - BGAnimations</title>
+    <meta name="description" content="Vibrant neon colors flowing in wave patterns with smooth transitions and glow effects">
+    <meta name="tags" content="gradients, waves, neon, colorful, liquid">
+    <meta name="thumbnail" content="https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            color: #fff;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        #waves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 1;
+        }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #60a5fa;
+            font-size: 14px;
+        }
+        
+        input[type="range"] {
+            width: 200px;
+        }
+        
+        .back-button {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        .info-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            max-width: 300px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .info-panel h3 {
+            color: #60a5fa;
+            margin-bottom: 10px;
+        }
+        
+        .info-panel p {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #ccc;
+        }
+        
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .preset-btn {
+            background: rgba(96, 165, 250, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .preset-btn:hover {
+            background: rgba(96, 165, 250, 0.4);
+            transform: translateY(-1px);
+        }
+        
+        select {
+            width: 100%;
+            padding: 8px;
+            background: rgba(30, 30, 30, 0.8);
+            color: white;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 5px;
+        }
+        
+        .wave-stats {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        .stat-value {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="waves-container">
+        <canvas id="waves-canvas"></canvas>
+    </div>
+    
+    <div class="controls">
+        <div class="control-group">
+            <label for="wave-speed">Wave Speed: <span id="speed-value">2</span></label>
+            <input type="range" id="wave-speed" min="0.5" max="5" value="2" step="0.1">
+        </div>
+        
+        <div class="control-group">
+            <label for="wave-height">Wave Height: <span id="height-value">80</span></label>
+            <input type="range" id="wave-height" min="20" max="200" value="80">
+        </div>
+        
+        <div class="control-group">
+            <label for="wave-frequency">Wave Frequency: <span id="frequency-value">0.02</span></label>
+            <input type="range" id="wave-frequency" min="0.005" max="0.05" value="0.02" step="0.001">
+        </div>
+        
+        <div class="control-group">
+            <label for="color-preset">Color Preset:</label>
+            <select id="color-preset">
+                <option value="neon-cyan">Neon Cyan</option>
+                <option value="electric-purple">Electric Purple</option>
+                <option value="sunset-glow">Sunset Glow</option>
+                <option value="ocean-depth">Ocean Depth</option>
+                <option value="rainbow-flow">Rainbow Flow</option>
+            </select>
+        </div>
+        
+        <div class="preset-buttons">
+            <button class="preset-btn" data-preset="calm">Calm Waves</button>
+            <button class="preset-btn" data-preset="stormy">Stormy Waves</button>
+            <button class="preset-btn" data-preset="pulse">Pulse Mode</button>
+            <button class="preset-btn" data-preset="chaos">Chaos Mode</button>
+        </div>
+        
+        <button class="back-button" onclick="window.location.href='dashboard.html'">← Back to Dashboard</button>
+    </div>
+    
+    <div class="wave-stats">
+        <div class="stat">Active Waves: <span class="stat-value" id="wave-count">4</span></div>
+        <div class="stat">Wave Points: <span class="stat-value" id="point-count">0</span></div>
+        <div class="stat">Frame Rate: <span class="stat-value" id="fps">0</span></div>
+    </div>
+    
+    <div class="info-panel">
+        <h3>Neon Gradient Waves</h3>
+        <p>Watch as vibrant neon colors flow in mesmerizing wave patterns. Adjust the controls to create different wave behaviors and color combinations.</p>
+    </div>
+
+    <script>
+        class NeonWaves {
+            constructor() {
+                this.canvas = document.getElementById('waves-canvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.waves = [];
+                this.time = 0;
+                this.frameCount = 0;
+                this.fps = 0;
+                this.lastTime = performance.now();
+                
+                // Configuration
+                this.config = {
+                    waveSpeed: 2,
+                    waveHeight: 80,
+                    waveFrequency: 0.02,
+                    colorPreset: 'neon-cyan'
+                };
+                
+                this.colorPresets = {
+                    'neon-cyan': [
+                        { r: 0, g: 255, b: 255 },    // Cyan
+                        { r: 0, g: 200, b: 255 },    // Light Blue
+                        { r: 0, g: 150, b: 255 }     // Blue
+                    ],
+                    'electric-purple': [
+                        { r: 138, g: 43, b: 226 },   // Purple
+                        { r: 186, g: 85, b: 211 },   // Orchid
+                        { r: 255, g: 0, b: 255 }     // Magenta
+                    ],
+                    'sunset-glow': [
+                        { r: 255, g: 69, b: 0 },     // Red-Orange
+                        { r: 255, g: 140, b: 0 },    // Dark Orange
+                        { r: 255, g: 215, b: 0 }     // Gold
+                    ],
+                    'ocean-depth': [
+                        { r: 0, g: 191, b: 255 },    // Deep Sky Blue
+                        { r: 30, g: 144, b: 255 },   // Dodger Blue
+                        { r: 0, g: 0, b: 128 }       // Navy
+                    ],
+                    'rainbow-flow': [
+                        { r: 255, g: 0, b: 0 },      // Red
+                        { r: 255, g: 165, b: 0 },    // Orange
+                        { r: 255, g: 255, b: 0 },    // Yellow
+                        { r: 0, g: 255, b: 0 },      // Green
+                        { r: 0, g: 0, b: 255 },      // Blue
+                        { r: 75, g: 0, b: 130 },     // Indigo
+                        { r: 238, g: 130, b: 238 }   // Violet
+                    ]
+                };
+                
+                this.init();
+                this.setupEventListeners();
+                this.animate();
+            }
+            
+            init() {
+                this.resizeCanvas();
+                this.createWaves();
+                
+                // Setup controls
+                document.getElementById('wave-speed').value = this.config.waveSpeed;
+                document.getElementById('wave-height').value = this.config.waveHeight;
+                document.getElementById('wave-frequency').value = this.config.waveFrequency;
+                document.getElementById('color-preset').value = this.config.colorPreset;
+                
+                this.updateControlValues();
+            }
+            
+            resizeCanvas() {
+                this.canvas.width = window.innerWidth;
+                this.canvas.height = window.innerHeight;
+            }
+            
+            createWaves() {
+                this.waves = [];
+                const colors = this.colorPresets[this.config.colorPreset];
+                
+                // Create multiple waves with different properties
+                for (let i = 0; i < 4; i++) {
+                    this.waves.push({
+                        amplitude: this.config.waveHeight * (0.7 + Math.random() * 0.6),
+                        frequency: this.config.waveFrequency * (0.8 + Math.random() * 0.4),
+                        speed: this.config.waveSpeed * (0.8 + Math.random() * 0.4),
+                        phase: Math.random() * Math.PI * 2,
+                        color: colors[i % colors.length],
+                        points: [],
+                        yOffset: (i / 3) * this.canvas.height
+                    });
+                }
+            }
+            
+            setupEventListeners() {
+                window.addEventListener('resize', () => {
+                    this.resizeCanvas();
+                });
+                
+                // Control event listeners
+                document.getElementById('wave-speed').addEventListener('input', (e) => {
+                    this.config.waveSpeed = parseFloat(e.target.value);
+                    document.getElementById('speed-value').textContent = this.config.waveSpeed.toFixed(1);
+                    this.updateWaveProperties();
+                });
+                
+                document.getElementById('wave-height').addEventListener('input', (e) => {
+                    this.config.waveHeight = parseInt(e.target.value);
+                    document.getElementById('height-value').textContent = this.config.waveHeight;
+                    this.updateWaveProperties();
+                });
+                
+                document.getElementById('wave-frequency').addEventListener('input', (e) => {
+                    this.config.waveFrequency = parseFloat(e.target.value);
+                    document.getElementById('frequency-value').textContent = this.config.waveFrequency.toFixed(3);
+                    this.updateWaveProperties();
+                });
+                
+                document.getElementById('color-preset').addEventListener('change', (e) => {
+                    this.config.colorPreset = e.target.value;
+                    this.updateWaveColors();
+                });
+                
+                // Preset buttons
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.applyPreset(e.target.dataset.preset);
+                    });
+                });
+            }
+            
+            applyPreset(preset) {
+                switch(preset) {
+                    case 'calm':
+                        this.config.waveSpeed = 1;
+                        this.config.waveHeight = 40;
+                        this.config.waveFrequency = 0.01;
+                        break;
+                    case 'stormy':
+                        this.config.waveSpeed = 4;
+                        this.config.waveHeight = 150;
+                        this.config.waveFrequency = 0.04;
+                        break;
+                    case 'pulse':
+                        this.config.waveSpeed = 2.5;
+                        this.config.waveHeight = 100;
+                        this.config.waveFrequency = 0.025;
+                        break;
+                    case 'chaos':
+                        this.config.waveSpeed = 5;
+                        this.config.waveHeight = 200;
+                        this.config.waveFrequency = 0.05;
+                        break;
+                }
+                
+                // Update controls
+                document.getElementById('wave-speed').value = this.config.waveSpeed;
+                document.getElementById('wave-height').value = this.config.waveHeight;
+                document.getElementById('wave-frequency').value = this.config.waveFrequency;
+                
+                this.updateControlValues();
+                this.updateWaveProperties();
+            }
+            
+            updateWaveProperties() {
+                this.waves.forEach((wave, i) => {
+                    wave.amplitude = this.config.waveHeight * (0.7 + Math.random() * 0.6);
+                    wave.frequency = this.config.waveFrequency * (0.8 + Math.random() * 0.4);
+                    wave.speed = this.config.waveSpeed * (0.8 + Math.random() * 0.4);
+                });
+            }
+            
+            updateWaveColors() {
+                const colors = this.colorPresets[this.config.colorPreset];
+                this.waves.forEach((wave, i) => {
+                    wave.color = colors[i % colors.length];
+                });
+            }
+            
+            updateControlValues() {
+                document.getElementById('speed-value').textContent = this.config.waveSpeed.toFixed(1);
+                document.getElementById('height-value').textContent = this.config.waveHeight;
+                document.getElementById('frequency-value').textContent = this.config.waveFrequency.toFixed(3);
+            }
+            
+            animate() {
+                const currentTime = performance.now();
+                const deltaTime = currentTime - this.lastTime;
+                this.lastTime = currentTime;
+                
+                // Calculate FPS
+                this.frameCount++;
+                if (this.frameCount % 10 === 0) {
+                    this.fps = Math.round(1000 / deltaTime);
+                    document.getElementById('fps').textContent = this.fps;
+                }
+                
+                this.time += deltaTime * 0.001 * this.config.waveSpeed;
+                
+                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                this.drawWaves();
+                this.updateStats();
+                
+                requestAnimationFrame(() => this.animate());
+            }
+            
+            drawWaves() {
+                const segmentWidth = 20;
+                const segments = Math.ceil(this.canvas.width / segmentWidth) + 1;
+                let totalPoints = 0;
+                
+                this.waves.forEach(wave => {
+                    wave.points = [];
+                    
+                    for (let i = 0; i <= segments; i++) {
+                        const x = i * segmentWidth;
+                        const noise = Math.sin(this.time * 0.5 + i * 0.1) * 10;
+                        const y = wave.yOffset + 
+                                 Math.sin(x * wave.frequency + this.time * wave.speed + wave.phase) * wave.amplitude +
+                                 noise;
+                        
+                        wave.points.push({ x, y });
+                        totalPoints++;
+                    }
+                    
+                    this.drawWave(wave);
+                });
+                
+                document.getElementById('point-count').textContent = totalPoints;
+            }
+            
+            drawWave(wave) {
+                const gradient = this.ctx.createLinearGradient(0, 0, this.canvas.width, 0);
+                const color = wave.color;
+                
+                // Create gradient with neon glow
+                gradient.addColorStop(0, `rgba(${color.r}, ${color.g}, ${color.b}, 0.1)`);
+                gradient.addColorStop(0.5, `rgba(${color.r}, ${color.g}, ${color.b}, 0.6)`);
+                gradient.addColorStop(1, `rgba(${color.r}, ${color.g}, ${color.b}, 0.1)`);
+                
+                this.ctx.beginPath();
+                this.ctx.moveTo(wave.points[0].x, wave.points[0].y);
+                
+                for (let i = 1; i < wave.points.length; i++) {
+                    const xc = (wave.points[i].x + wave.points[i - 1].x) / 2;
+                    const yc = (wave.points[i].y + wave.points[i - 1].y) / 2;
+                    this.ctx.quadraticCurveTo(wave.points[i - 1].x, wave.points[i - 1].y, xc, yc);
+                }
+                
+                this.ctx.strokeStyle = gradient;
+                this.ctx.lineWidth = 3;
+                this.ctx.stroke();
+                
+                // Add glow effect
+                this.ctx.shadowColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                this.ctx.shadowBlur = 15;
+                this.ctx.stroke();
+                this.ctx.shadowBlur = 0;
+                
+                // Draw points for more detailed look
+                wave.points.forEach(point => {
+                    this.ctx.beginPath();
+                    this.ctx.arc(point.x, point.y, 2, 0, Math.PI * 2);
+                    this.ctx.fillStyle = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                    this.ctx.fill();
+                    
+                    this.ctx.shadowColor = `rgb(${color.r}, ${color.g}, ${color.b})`;
+                    this.ctx.shadowBlur = 8;
+                    this.ctx.fill();
+                    this.ctx.shadowBlur = 0;
+                });
+            }
+            
+            updateStats() {
+                document.getElementById('wave-count').textContent = this.waves.length;
+            }
+        }
+        
+        // Initialize the animation when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new NeonWaves();
+        });
+    </script>
+</body>
+</html>

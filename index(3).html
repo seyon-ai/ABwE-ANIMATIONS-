@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Background Animations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #000;
+            color: #e2e8f0;
+            overflow: hidden;
+            height: 100vh;
+        }
+        
+        /* Video Section */
+        #video-section {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #intro-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .skip-button {
+            margin-top: 30px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        .skip-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+            animation: none;
+        }
+        
+        .skip-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .skip-button:hover::before {
+            left: 100%;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+            }
+        }
+        
+        .loading-text {
+            margin-top: 20px;
+            color: #94a3b8;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .dots {
+            display: inline-block;
+            animation: dots 1.5s infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+        
+        .logo {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #60a5fa;
+            z-index: 101;
+        }
+        
+        .logo span {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Introduction Section -->
+    <section id="video-section">
+        <div class="logo">BG<span>Animations</span></div>
+        <video id="intro-video" autoplay muted>
+            <source src="dd.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="video-overlay">
+            <button class="skip-button" onclick="skipVideo()">Skip Introduction</button>
+            <div class="loading-text">Loading amazing animations<span class="dots"></span></div>
+        </div>
+    </section>
+
+    <script>
+        // Wait for the video to end, then redirect to dashboard
+        document.getElementById('intro-video').addEventListener('ended', function() {
+            window.location.href = 'dashboard.html';
+        });
+        
+        // Skip video functionality
+        function skipVideo() {
+            // Add exit animation
+            const videoSection = document.getElementById('video-section');
+            videoSection.style.opacity = '0';
+            videoSection.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(function() {
+                window.location.href = 'dashboard.html';
+            }, 500);
+        }
+        
+        // If video fails to load, redirect after 5 seconds
+        setTimeout(function() {
+            if (document.getElementById('video-section').style.display !== 'none') {
+                window.location.href = 'dashboard.html';
+            }
+        }, 5000);
+        
+        // Add floating particles in background for visual interest
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingParticles();
+        });
+        
+        function createFloatingParticles() {
+            const overlay = document.querySelector('.video-overlay');
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = Math.random() * 6 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = 'rgba(59, 130, 246, 0.5)';
+                particle.style.borderRadius = '50%';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animation = `float ${Math.random() * 10 + 10}s linear infinite`;
+                overlay.appendChild(particle);
+            }
+            
+            // Add CSS for floating animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes float {
+                    0% { transform: translateY(0) translateX(0); opacity: 0; }
+                    10% { opacity: 0.7; }
+                    90% { opacity: 0.7; }
+                    100% { transform: translateY(-100vh) translateX(${Math.random() > 0.5 ? '-' : ''}20px); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+</html>

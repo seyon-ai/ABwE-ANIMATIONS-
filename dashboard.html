@@ -382,9 +382,9 @@
             <div class="footer-content">
                 <div class="contact-info">
                     <div class="logo">BG<span>Animations</span></div>
-                    <div>Email: contact@bganimations.com</div>
-                    <div>Phone: +1 (555) 123-4567</div>
-                    <div>Address: 123 Animation Street, Creative City</div>
+                    <div>Email: abussprotocolwebdev@gmail.com</div>
+                    <div>Phone: +91 (555) 8327641735</div>
+                    <div>Address: Hidden </div>
                 </div>
                 <div class="stats">
                     <div class="stat-item">
@@ -617,64 +617,71 @@
             
             // Add demo animations
             addDemoAnimations();
-        });
+        })
         
-        // Demo function - replace with your actual animation files
-        function addDemoAnimations() {
-            const demoAnimations = [
-                {
-                    title: "Cosmic Particles",
-                    description: "Floating particles that create a mesmerizing cosmic effect with interactive mouse following",
-                    tags: ["particles", "cosmic", "interactive", "floating"],
-                    thumbnail: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                    filePath: "cosmic-particles.html"
-                },
-                {
-                    title: "Neon Gradient Waves",
-                    description: "Vibrant neon colors flowing in wave patterns with smooth transitions and glow effects",
-                    tags: ["gradients", "waves", "neon", "colorful"],
-                    thumbnail: "https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                    filePath: "neon-waves.html"
-                },
-                {
-                    title: "Geometric Harmony",
-                    description: "Synchronized geometric shapes rotating and transforming in perfect harmony",
-                    tags: ["geometric", "shapes", "synchronized", "abstract"],
-                    thumbnail: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                    filePath: "geometric-harmony.html"
-                },
-                {
-                    title: "Liquid Motion",
-                    description: "Fluid animations that simulate liquid movements with realistic physics and reflections",
-                    tags: ["liquid", "fluid", "physics", "realistic"],
-                    thumbnail: "https://images.unsplash.com/photo-1550684376-efcbd6e3f031?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                    filePath: "liquid-motion.html"
-                },
-                {
-                    title: "Digital Rain",
-                    description: "Matrix-style digital rain with falling characters and glitch effects",
-                    tags: ["digital", "matrix", "glitch", "code"],
-                    thumbnail: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                    filePath: "digital-rain.html"
-                },
-                {
-                    title: "Aurora Borealis",
-                    description: "Northern lights simulation with flowing colorful curtains and subtle glow",
-                    tags: ["aurora", "nature", "lights", "colorful"],
-                    thumbnail: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-                    filePath: "aurora-borealis.html"
-                }
-            ];
-            
-            // Add animations with delay for visual effect
-            demoAnimations.forEach((animation, index) => {
-                setTimeout(() => {
-                    animationsDatabase.push(animation);
-                    renderAnimationCard(animation);
-                    updateStats();
-                }, index * 200);
-            });
+        // In dashboard.html - Update the addDemoAnimations() function
+function addDemoAnimations() {
+    const demoAnimations = [
+        {
+            title: "Floating Bubbles",
+            description: "Elegant floating bubbles with smooth movement, scaling effects, and realistic physics",
+            tags: ["bubbles", "floating", "smooth", "physics"],
+            thumbnail: "https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            filePath: "bubbles.html"
+        },
+        {
+            title: "Cosmic Particles",
+            description: "Floating particles that create a mesmerizing cosmic effect with interactive mouse following",
+            tags: ["particles", "cosmic", "interactive", "floating"],
+            thumbnail: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            filePath: "cosmic-particles.html"
+        },
+        {
+            title: "Neon Gradient Waves",
+            description: "Vibrant neon colors flowing in wave patterns with smooth transitions and glow effects",
+            tags: ["gradients", "waves", "neon", "colorful"],
+            thumbnail: "https://images.unsplash.com/photo-1579546929662-711aa81148cf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            filePath: "neon-waves.html"
+        },
+        {
+            title: "Geometric Harmony",
+            description: "Synchronized geometric shapes rotating and transforming in perfect harmony",
+            tags: ["geometric", "shapes", "synchronized", "abstract"],
+            thumbnail: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            filePath: "geometric-harmony.html"
+        },
+        {
+            title: "Liquid Motion",
+            description: "Fluid animations that simulate liquid movements with realistic physics and reflections",
+            tags: ["liquid", "fluid", "physics", "realistic"],
+            thumbnail: "https://images.unsplash.com/photo-1550684376-efcbd6e3f031?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            filePath: "liquid-motion.html"
+        },
+        {
+            title: "Digital Rain",
+            description: "Matrix-style digital rain with falling characters and glitch effects",
+            tags: ["digital", "matrix", "glitch", "code"],
+            thumbnail: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            filePath: "digital-rain.html"
+        },
+        {
+            title: "Aurora Borealis",
+            description: "Northern lights simulation with flowing colorful curtains and subtle glow",
+            tags: ["aurora", "nature", "lights", "colorful"],
+            thumbnail: "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+            filePath: "aurora-borealis.html"
         }
-    </script>
+    ];
+    
+    // Add animations with delay for visual effect
+    demoAnimations.forEach((animation, index) => {
+        setTimeout(() => {
+            animationsDatabase.push(animation);
+            renderAnimationCard(animation);
+            updateStats();
+        }, index * 200);
+    });
+}
+</script>
 </body>
 </html>
